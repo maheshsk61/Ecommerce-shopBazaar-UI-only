@@ -16,27 +16,35 @@ const PriceTable: React.FC<{
       }}
     >
       <table>
-        <tr>
-          <th>{constant.subTotal}</th>
-          <td>
-            {constant.rupees} {subTotal}
-          </td>
-        </tr>
-        <tr>
-          <th>{constant.tax}</th>
-          <td>
-            {constant.rupees} {taxPrice}
-          </td>
-        </tr>
-        <hr />
-        <tr>
-          <th>{constant.grandTotal}</th>
-          <td>
-            <b>
-              {constant.rupees} {grandTotal}
-            </b>
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>{constant.subTotal}</th>
+            <td>
+              {constant.rupees} {subTotal}
+            </td>
+          </tr>
+          <tr>
+            <th>{constant.tax}</th>
+            <td>
+              {constant.rupees} {taxPrice}
+            </td>
+          </tr>
+          <tr>
+            <td colSpan={2}>
+              <hr style={{ border: "1px solid black", margin: "5px 0" }} />
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>{constant.grandTotal}</th>
+            <td>
+              <b>
+                {constant.rupees} {grandTotal}
+              </b>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </Card>
   );
