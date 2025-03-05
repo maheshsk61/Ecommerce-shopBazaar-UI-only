@@ -65,7 +65,7 @@ const ProductView: React.FC<IProducts> = ({
   };
 
   useEffect(() => {
-    console.log(`Products ${JSON.stringify(showProductsAfterSorting)}`);
+    // console.log(`Products ${JSON.stringify(showProductsAfterSorting)}`);
   }, [showProductsAfterSorting]);
 
   return (
