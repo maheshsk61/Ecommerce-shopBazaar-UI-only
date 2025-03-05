@@ -1,9 +1,19 @@
-import { Box, Card, Grid2, Typography, Skeleton } from "@mui/material";
+import {
+  Box,
+  Card,
+  Grid2,
+  Typography,
+  Skeleton,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from "@mui/material";
 import { IProducts, IProductsData, ISearchQuery } from "../../interface";
 import { Link } from "react-router-dom";
 import { constant } from "../../constant";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
+import { useEffect, useState } from "react";
 
 const ProductView: React.FC<IProducts> = ({
   products,
@@ -13,26 +23,58 @@ const ProductView: React.FC<IProducts> = ({
     (state: RootState) => state.search
   );
   const query: string = searchQuery.query?.toLowerCase() ?? "";
-  const filteredProducts: IProductsData[] = (products ?? []).filter(
-    (product) => {
-      return product.name?.toLowerCase().includes(query);
+  const [showProductsAfterSorting, setShowProductsAfterSorting] = useState<
+    IProductsData[]
+  >([]);
+  const [sortPrice, setSortPrice] = useState("");
+
+  useEffect(() => {
+    const filteredProducts: IProductsData[] = (products ?? []).filter(
+      (product) => {
+        return product.name?.toLowerCase().includes(query);
+      }
+    );
+    // console.log(`filteredProducts ${JSON.stringify(filteredProducts)}`);
+
+    let sortedFilteredProducts = [...filteredProducts];
+    if (sortPrice === "Low to High") {
+      sortedFilteredProducts.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+    } else if (sortPrice === "High to Low") {
+      sortedFilteredProducts.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
     }
-  );
-  // console.log(`filteredProducts ${JSON.stringify(filteredProducts)}`);
-  const notFilteredProducts: IProductsData[] = (products ?? []).filter(
-    (product) => {
-      return !product.name?.toLowerCase().includes(query);
-    }
-  );
-  // console.log(`notFilteredProducts ${JSON.stringify(notFilteredProducts)}`);
-  const sortedFilteredProducts: IProductsData[] = [
-    ...filteredProducts,
-    ...notFilteredProducts,
-  ];
-  //console.log(`sortedFilteredProducts ${JSON.stringify(sortedFilteredProducts)}`);
+
+    const notFilteredProducts: IProductsData[] = (products ?? []).filter(
+      (product) => {
+        return !product.name?.toLowerCase().includes(query);
+      }
+    );
+    // console.log(`notFilteredProducts ${JSON.stringify(notFilteredProducts)}`);
+
+    const finalProducts: IProductsData[] = [
+      ...sortedFilteredProducts,
+      ...notFilteredProducts,
+    ];
+    //console.log(`sortedFilteredProducts ${JSON.stringify(sortedFilteredProducts)}`);
+
+    setShowProductsAfterSorting(finalProducts);
+  }, [query, sortPrice, products]);
+
+  const handleSortingPrice = (e: SelectChangeEvent) => {
+    const selectedValue = e.target.value;
+    setSortPrice(selectedValue);
+  };
 
   return (
-    <Box sx={{ padding: 5, marginTop: { xs: 0 }}}>
+    <Box sx={{ padding: 5, marginTop: { xs: 0 } }}>
+      <Box sx={{textAlign:'center', margin:'0 auto 10px'}}>
+        <Select value={sortPrice} onChange={handleSortingPrice} displayEmpty>
+          <MenuItem value="" disabled>
+            Sort By
+          </MenuItem>
+          <MenuItem value={"Low to High"}>Low to High</MenuItem>
+          <MenuItem value={"High to Low"}>High to Low</MenuItem>
+        </Select>
+      </Box>
       <Grid2 container columnSpacing={2} rowSpacing={2} justifyContent="center">
         {loading
           ? Array.from({ length: 20 }, (_, index) => {
@@ -67,14 +109,14 @@ const ProductView: React.FC<IProducts> = ({
                 </Grid2>
               );
             })
-          : sortedFilteredProducts &&
-            sortedFilteredProducts.length > 0 &&
-            sortedFilteredProducts.map((product: IProductsData, index) => {
+          : showProductsAfterSorting &&
+            showProductsAfterSorting.length > 0 &&
+            showProductsAfterSorting.map((product: IProductsData, index) => {
               return (
                 <Grid2
                   sx={{
                     marginBottom:
-                      index === sortedFilteredProducts.length - 1 ? 0 : 1,
+                      index === showProductsAfterSorting.length - 1 ? 0 : 1,
                     gridColumn: {
                       xs: "span 12",
                       sm: "span 6",
