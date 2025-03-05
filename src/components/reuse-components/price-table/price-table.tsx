@@ -20,13 +20,13 @@ const PriceTable: React.FC<{
           <tr>
             <th>{constant.subTotal}</th>
             <td>
-              {constant.rupees} {subTotal}
+              {constant.rupees} {subTotal?.toLocaleString("en-IN")}
             </td>
           </tr>
           <tr>
             <th>{constant.tax}</th>
             <td>
-              {constant.rupees} {taxPrice}
+              {constant.rupees} {taxPrice?.toLocaleString("en-IN")}
             </td>
           </tr>
           <tr>
@@ -40,7 +40,7 @@ const PriceTable: React.FC<{
             <th>{constant.grandTotal}</th>
             <td>
               <b>
-                {constant.rupees} {grandTotal}
+                {constant.rupees} {grandTotal?.toLocaleString("en-IN")}
               </b>
             </td>
           </tr>

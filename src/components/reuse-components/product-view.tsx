@@ -64,9 +64,13 @@ const ProductView: React.FC<IProducts> = ({
     setSortPrice(selectedValue);
   };
 
+  useEffect(() => {
+    console.log(`Products ${JSON.stringify(showProductsAfterSorting)}`);
+  }, [showProductsAfterSorting]);
+
   return (
     <Box sx={{ padding: 5, marginTop: { xs: 0 } }}>
-      <Box sx={{textAlign:'center', margin:'0 auto 10px'}}>
+      <Box sx={{ textAlign: "center", margin: "0 auto 10px" }}>
         <Select value={sortPrice} onChange={handleSortingPrice} displayEmpty>
           <MenuItem value="" disabled>
             Sort By
@@ -164,7 +168,7 @@ const ProductView: React.FC<IProducts> = ({
                         variant="h6"
                       >
                         {constant.rupees}
-                        {product.price}
+                        {product.price?.toLocaleString("en-IN")}
                       </Typography>
                     </Card>
                   </Link>

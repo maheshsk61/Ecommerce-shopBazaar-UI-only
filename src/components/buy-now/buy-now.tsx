@@ -178,7 +178,7 @@ const BuyNow: React.FC = (): JSX.Element => {
                   <Typography variant="h6">{product.name}</Typography>
                   <Typography variant="h6">
                     <b>
-                      {constant.rupees} {product.price}
+                      {constant.rupees} {product.price?.toLocaleString("en-IN")}
                     </b>
                   </Typography>
                   <Buttons

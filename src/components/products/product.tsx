@@ -216,7 +216,7 @@ const Product: React.FC<IProductsData> = (): JSX.Element => {
                       </Typography>
                       <Typography variant="h4">
                         {constant.rupees}
-                        {product.price}
+                        {product.price?.toLocaleString("en-IN")}
                       </Typography>
                       {product.details &&
                         Object.entries(product.details).map(
